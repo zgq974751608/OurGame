@@ -28,11 +28,11 @@ public class RoleDefensePercent : BaseProperty {
 	
 	//生效/
 	public override void ActiveProperty(){
-		roleInstance.Hp += roleInstance.Hp * mDefensePercent;
+		roleInstance.Defense += roleInstance.Hp * mDefensePercent;
 	}
 	
 	//移除/
 	public override void RemoveProperty(){
-		roleInstance.Hp -= roleInstance.Hp * mDefensePercent;
+		roleInstance.Defense -= roleInstance.Hp * mDefensePercent;
 	}
 }

@@ -1,48 +1,44 @@
 ﻿/*****
 ************Add by 朱桂清
 
-************创建于2015-01-10
+************创建于2015-02-27
 
-************装备对象
+************buf
 *****/
 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Equipment {
-	public Equipment(){
-
+public class RoleBuffer{
+	public RoleBuffer(){
+		
 	}
-
-	public Equipment(List<BaseProperty> pList){
+	
+	public RoleBuffer(List<BaseProperty> pList){
 		for(int i = 0;i < pList.Count;i++){
 			pList[i].roleInstance = this.roleInstance;
 			this.propertyList.Add(pList[i]);
 		}
 	}
-
+	
 	public Role roleInstance;
-	#region 装备的天然属性
-	public int equipID;					//装备ID/
-	public int equipPos; 				//装备部位/
-	#endregion
-
+	
 	List<BaseProperty> propertyList = new List<BaseProperty>();
-
+	
 	/// <summary>
-	/// 穿戴装备.
+	/// 激活buf.
 	/// </summary>
-	public void Wear(){
+	public void ActivateBuffer(){
 		for(int i = 0;i < propertyList.Count;i++){
 			propertyList[i].ActiveProperty();
 		}
 	}
-
+	
 	/// <summary>
-	/// 卸下装备.
+	/// 移除buf.
 	/// </summary>
-	public void UnWear(){
+	public void UnactivateBuffer(){
 		for(int i = 0;i < propertyList.Count;i++){
 			propertyList[i].RemoveProperty();
 		}

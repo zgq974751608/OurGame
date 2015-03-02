@@ -9,8 +9,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class DebugHelper{
-	public static void Log(string str){
-
+public class DebugHelper {
+	public static void Log(object obj){
+		Debug.Log(obj);
 	}
 }

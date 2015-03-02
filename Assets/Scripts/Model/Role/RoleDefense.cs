@@ -27,11 +27,11 @@ public class RoleDefense : BaseProperty {
 	
 	//生效/
 	public override void ActiveProperty(){
-		roleInstance.Hp += mDefense;
+		roleInstance.Defense += mDefense;
 	}
 	
 	//移除/
 	public override void RemoveProperty(){
-		roleInstance.Hp -= mDefense;
+		roleInstance.Defense -= mDefense;
 	}
 }

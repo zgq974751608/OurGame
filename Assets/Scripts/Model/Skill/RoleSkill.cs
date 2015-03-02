@@ -1,21 +1,21 @@
 ﻿/*****
 ************Add by 朱桂清
 
-************创建于2015-01-10
+************创建于2015-02-27
 
-************装备对象
+************技能
 *****/
 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Equipment {
-	public Equipment(){
+public class RoleSkill {
+	public RoleSkill(){
 
 	}
 
-	public Equipment(List<BaseProperty> pList){
+	public RoleSkill(List<BaseProperty> pList){
 		for(int i = 0;i < pList.Count;i++){
 			pList[i].roleInstance = this.roleInstance;
 			this.propertyList.Add(pList[i]);
@@ -23,26 +23,22 @@ public class Equipment {
 	}
 
 	public Role roleInstance;
-	#region 装备的天然属性
-	public int equipID;					//装备ID/
-	public int equipPos; 				//装备部位/
-	#endregion
 
 	List<BaseProperty> propertyList = new List<BaseProperty>();
 
 	/// <summary>
-	/// 穿戴装备.
+	/// 激活技能.
 	/// </summary>
-	public void Wear(){
+	public void ActivateSkill(){
 		for(int i = 0;i < propertyList.Count;i++){
 			propertyList[i].ActiveProperty();
 		}
 	}
 
 	/// <summary>
-	/// 卸下装备.
+	/// 移除技能.
 	/// </summary>
-	public void UnWear(){
+	public void UnactivateSkill(){
 		for(int i = 0;i < propertyList.Count;i++){
 			propertyList[i].RemoveProperty();
 		}
