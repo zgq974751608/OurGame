@@ -81,4 +81,21 @@ public class MGDataManager {
 			}
 		}
 	}
+
+	/// <summary>
+	/// 根据版本号，判断加载哪一个资源，参数是内部资源列表的key.
+	/// </summary>
+	public static bool CheckLoadOutResource(string strKey){
+		if(outResourceDic.ContainsKey(strKey)){
+			ResourceInfoStruct localStruct = localResourceDic[strKey];
+			ResourceInfoStruct outStruct = outResourceDic[strKey];
+			if(localStruct.version < outStruct.version){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		return false;
+	}
 }
