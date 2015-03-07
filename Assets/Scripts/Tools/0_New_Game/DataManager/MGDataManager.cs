@@ -22,6 +22,7 @@ public class MGDataManager {
 		public string filePath;
 		public int resType;
 		public int version;
+		public int resourcePathType;
 	}
 
 	//资源类型,囊括一切可动态加载的内容/
@@ -29,11 +30,18 @@ public class MGDataManager {
 		Config,			//数据配置表/
 	}
 
-	public static Dictionary<string,ResourceInfoStruct> localResourceDic;	//本地资源列表/
-	public static Dictionary<string,ResourceInfoStruct> outResourceDic;		//外部资源列表,更新目录/
+	public enum ResourceTathType{
+		Resource,
+		Streaming,
+	}
+
+	public static Dictionary<string,ResourceInfoStruct> newerResourceDic;				//较新的资源列表/
+
+	static Dictionary<string,ResourceInfoStruct> localResourceDic;						//本地资源列表/
+	static Dictionary<string,ResourceInfoStruct> outResourceDic;						//外部资源列表,更新目录/
 
 	/// <summary>
-	/// 加载资源列表.
+	/// 加载资源列表，并得到最新的资源列表.
 	/// </summary>
 	public static void LoadResourceList(){
 		TextAsset text = Resources.Load(ResourcePath.LOCALRESOURCELISTPATH) as TextAsset;
@@ -47,11 +55,12 @@ public class MGDataManager {
 				tStruct.filePath = configArgs[1];
 				tStruct.resType = int.Parse(configArgs[2]);
 				tStruct.version = int.Parse(configArgs[3]);
+				tStruct.resourcePathType = (int)ResourceTathType.Resource;
 
 				localResourceDic.Add(tStruct.resName , tStruct);
 			}
 		} catch(Exception e){
-			DebugHelper.Log("Load local resource file list error ----> " + e.ToString());
+			DebugHelper.Log("加载本地资源列表错误 ----> " + e.ToString());
 		} finally {
 			sr.Close();
 		}
@@ -71,13 +80,33 @@ public class MGDataManager {
 					tStruct.filePath = configArgs[1];
 					tStruct.resType = int.Parse(configArgs[2]);
 					tStruct.version = int.Parse(configArgs[3]);
+					tStruct.resourcePathType = (int)ResourceTathType.Streaming;
 					
 					localResourceDic.Add(tStruct.resName , tStruct);
 				}
 			} catch(Exception e){
-				DebugHelper.Log("Load out resource file list error ----> " + e.ToString());
+				DebugHelper.Log("加载外部资源列表错误 ----> " + e.ToString());
 			} finally {
 				sr1.Close();
+			}
+		}
+
+		foreach(KeyValuePair<string,ResourceInfoStruct> kvp in localResourceDic){
+			if(outResourceDic.ContainsKey(kvp.Key)){
+				ResourceInfoStruct tStruct = outResourceDic[kvp.Key];
+				if(tStruct.version > kvp.Value.version){
+					newerResourceDic.Add(kvp.Key,tStruct);
+				} else {
+					newerResourceDic.Add(kvp.Key,kvp.Value);
+				}
+			} else {
+				newerResourceDic.Add(kvp.Key,kvp.Value);
+			}
+		}
+
+		foreach(KeyValuePair<string,ResourceInfoStruct> kvp in outResourceDic){
+			if(!localResourceDic.ContainsKey(kvp.Key)){
+				newerResourceDic.Add(kvp.Key,kvp.Value);
 			}
 		}
 	}
