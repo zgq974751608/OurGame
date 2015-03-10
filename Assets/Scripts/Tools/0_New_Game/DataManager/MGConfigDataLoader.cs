@@ -39,7 +39,8 @@ public class MGConfigDataLoader {
 				}
 
 				if(tStruct.resourcePathType == (int)MGDataManager.ResourceTathType.Resource){
-
+					TextAsset text = Resources.Load(tStruct.filePath) as TextAsset;
+					MemoryConfigData(text.text);
 				} else if(tStruct.resourcePathType == (int)MGDataManager.ResourceTathType.Streaming){
 
 				} else {
@@ -49,5 +50,10 @@ public class MGConfigDataLoader {
 		}catch(Exception e){
 			DebugHelper.Log("加载配置表发生错误" + e.ToString());
 		}
+	}
+
+	//将配置表加入内存/
+	void MemoryConfigData(string text){
+
 	}
 }
