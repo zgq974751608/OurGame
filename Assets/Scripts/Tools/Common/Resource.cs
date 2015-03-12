@@ -10,6 +10,9 @@ public class Resource {
     private static Hashtable images = new Hashtable();
     private static Hashtable prefabs = new Hashtable();
 
+	/// <summary>
+	/// text文件加载，文件一律在Resources下面.
+	/// </summary>
     public static string LoadTextFile(string path, string ext)
     {
         object obj = Resource.texts[path];
@@ -18,7 +21,7 @@ public class Resource {
             Resource.texts.Remove(path);
             string text = string.Empty;
 #if UNITY_EDITOR
-            string pathstr = Util.GetDataDir() + "/StreamingAssets/" + path + ext;
+            string pathstr = Util.GetDataDir() + path + ext;
 #else
             string pathstr = Util.AppContentDataUri + path + ext;
 #endif

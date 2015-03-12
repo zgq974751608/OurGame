@@ -6,7 +6,9 @@
 ************资源路径
 *****/
 
+using UnityEngine;
+
 public class ResourcePath {
-	public static readonly string LOCALRESOURCELISTPATH 		= 	"";						//本地资源列表路径/
-	public static readonly string OUTRESOURCELISTPATH 			= 	"";						//外部资源列表路径/
+	public static readonly string LOCALRESOURCELISTPATH 		= 	"";											//本地资源列表文件路径/
+	public static readonly string OUTRESOURCELISTPATH 			= 	"";											//外部资源列表文件路径/
 }

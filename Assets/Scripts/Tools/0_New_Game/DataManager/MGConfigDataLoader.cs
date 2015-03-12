@@ -10,11 +10,12 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 
 public class MGConfigDataLoader {
 	static MGConfigDataLoader instance;
 
-	public MGConfigDataLoader Instance(){
+	public static MGConfigDataLoader Instance(){
 		if(instance == null){
 			instance = new MGConfigDataLoader();
 		}
@@ -53,7 +54,8 @@ public class MGConfigDataLoader {
 	}
 
 	//将配置表加入内存/
-	void MemoryConfigData(string text){
-
+	public void MemoryConfigData(string text){
+		Xml tmxl = Xml.GetHelper(text);
+		SecurityElement se = tmxl.LoadXml();
 	}
 }

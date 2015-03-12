@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Table>
+  <TableRow ID="scene_music_2" clip="Sounds/BgMusic/scene_music_2" type="0" loop="NO" volume="0.1" varrs="scene_music_2" refID="scene_music_2" />
+  <TableRow ID="guozhan" clip="Sounds/BgMusic/guozhan" type="0" loop="YES" volume="0.2" varrs="scene_music_2;guozhan" refID="scene_music_2" />
+</Table>

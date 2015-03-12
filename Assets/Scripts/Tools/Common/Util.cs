@@ -150,18 +150,18 @@ public class Util : MonoBehaviour {
 
     public static string GetDataDir()
     {
-        string dataPath = Application.dataPath;
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            string directoryName = Path.GetDirectoryName(Path.GetDirectoryName(dataPath));
-            return Path.Combine(directoryName, "Documents/aiwan/");
-        }
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            return "/sdcard/aiwan/";
-        }
-        else
-            return dataPath;
+        //string dataPath = Application.dataPath;
+        //if (Application.platform == RuntimePlatform.IPhonePlayer)
+        //{
+        //    string directoryName = Path.GetDirectoryName(Path.GetDirectoryName(dataPath));
+        //    return Path.Combine(directoryName, "Documents/aiwan/");
+        //}
+        //if (Application.platform == RuntimePlatform.Android)
+        //{
+        //    return "/sdcard/aiwan/";
+        //}
+        //else
+		return Application.streamingAssetsPath;
     }
 
     public static Uri AppPersistentDataUri

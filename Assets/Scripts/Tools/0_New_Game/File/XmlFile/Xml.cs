@@ -9,11 +9,11 @@ public class Xml
 	{
 		this.InitHelper(file);
 	}
-	private void InitHelper(string file)
+	private void InitHelper(string filecContent)
 	{
-		string xml = Util.LoadXml(file);
+		//string xml = MGFileUtil.LoadXml(file);
 		this.xmlDoc = new SecurityParser();
-		this.xmlDoc.LoadXml(xml);
+		this.xmlDoc.LoadXml(filecContent);
 	}
 	public SecurityElement LoadXml()
 	{
