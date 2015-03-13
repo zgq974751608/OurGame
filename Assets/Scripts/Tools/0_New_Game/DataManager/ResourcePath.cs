@@ -11,4 +11,11 @@ using UnityEngine;
 public class ResourcePath {
 	public static readonly string LOCALRESOURCELISTPATH 		= 	"";											//本地资源列表文件路径/
 	public static readonly string OUTRESOURCELISTPATH 			= 	"";											//外部资源列表文件路径/
+
+	/// <summary>
+	/// 取得外部资源路径.
+	/// </summary>
+	public static string GetAppOutResourcePath(){
+		return Application.persistentDataPath;
+	}
 }

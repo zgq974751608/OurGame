@@ -3,7 +3,7 @@
 
 ************创建于2015-02-28
 
-************游戏数据管理，包括资源列表，最先运行
+************游戏数据管理，包括资源列表，最先运行，放在GameObject上面
 *****/
 
 using UnityEngine;
@@ -13,7 +13,9 @@ using System.IO;
 using System;
 using System.Text;
 
-public class MGDataManager {
+public class MGAssetManager : MonoBehaviour{
+	public delegate void OnResourceLoaded (UnityEngine.Object obj);
+
 	/// <summary>
 	/// 资源类型结构,读取资源列表文件时用.
 	/// </summary>
@@ -30,9 +32,10 @@ public class MGDataManager {
 		Config,			//数据配置表/
 	}
 
-	public enum ResourceTathType{
+	public enum ResourcePathType{
 		Resource,
 		Streaming,
+		Persistant,
 	}
 
 	public static Dictionary<string,ResourceInfoStruct> newerResourceDic;				//较新的资源列表/
@@ -55,12 +58,12 @@ public class MGDataManager {
 				tStruct.filePath = configArgs[1];
 				tStruct.resType = int.Parse(configArgs[2]);
 				tStruct.version = int.Parse(configArgs[3]);
-				tStruct.resourcePathType = (int)ResourceTathType.Resource;
+				tStruct.resourcePathType = (int)ResourcePathType.Resource;
 
 				localResourceDic.Add(tStruct.resName , tStruct);
 			}
 		} catch(Exception e){
-			DebugHelper.Log("加载本地资源列表错误 ----> " + e.ToString());
+			DebugHelper.Log(StringTool.Append("加载本地资源列表错误 ----> " + e.ToString()));
 		} finally {
 			sr.Close();
 		}
@@ -80,12 +83,12 @@ public class MGDataManager {
 					tStruct.filePath = configArgs[1];
 					tStruct.resType = int.Parse(configArgs[2]);
 					tStruct.version = int.Parse(configArgs[3]);
-					tStruct.resourcePathType = (int)ResourceTathType.Streaming;
+					tStruct.resourcePathType = (int)ResourcePathType.Streaming;
 					
 					localResourceDic.Add(tStruct.resName , tStruct);
 				}
 			} catch(Exception e){
-				DebugHelper.Log("加载外部资源列表错误 ----> " + e.ToString());
+				DebugHelper.Log(StringTool.Append("加载外部资源列表错误 ----> ",e.ToString()));
 			} finally {
 				sr1.Close();
 			}
@@ -127,4 +130,56 @@ public class MGDataManager {
 
 		return false;
 	}
+
+	#region 继承于mono
+
+	void Start(){
+		StartCoroutine(LoadOutResource());
+	}
+
+	struct WaitLoadStruct{
+		public string assetPath;
+		public OnResourceLoaded onResourceLoaded;
+	}
+
+	static List<WaitLoadStruct> waitToLoadList = new List<WaitLoadStruct>(); 
+
+	public static void LoadResource(string assetPath , ResourcePathType pathType , OnResourceLoaded onResourceLoaded){
+		if(pathType == ResourcePathType.Resource){
+			UnityEngine.Object obj = Resources.Load(assetPath);
+			if(onResourceLoaded != null){
+				onResourceLoaded(obj);
+			}
+		} else if(pathType == ResourcePathType.Persistant){
+			WaitLoadStruct tStruct = new WaitLoadStruct();
+			tStruct.assetPath = assetPath;
+			tStruct.onResourceLoaded = onResourceLoaded;
+			waitToLoadList.Add(tStruct);
+		}
+	}
+
+	IEnumerator LoadOutResource(){
+		while(true){
+			if(waitToLoadList.Count > 0){
+				WaitLoadStruct tStruct = waitToLoadList[0];
+				string realPath = StringTool.Append(ResourcePath.GetAppOutResourcePath(),"/",tStruct.assetPath);
+				WWW tWww = new WWW(realPath);
+				yield return tWww;
+
+				if(tWww.error != null){
+					DebugHelper.Log(StringTool.Append("加载资源错误----> " , tWww.error,"--->",realPath));
+				} else {
+					if(tStruct.onResourceLoaded != null){
+						UnityEngine.Object asset = tWww.assetBundle.mainAsset;
+						tStruct.onResourceLoaded(asset);
+						tWww.assetBundle.Unload(false);
+					}
+					waitToLoadList.RemoveAt(0);
+				}
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+	}
+	#endregion
 }

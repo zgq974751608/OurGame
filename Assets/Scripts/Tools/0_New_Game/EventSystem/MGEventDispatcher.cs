@@ -6,6 +6,16 @@ using UnityEngine;
 
 public class MGEventDispatcher
 {
+	static MGEventDispatcher instance;
+
+	public static MGEventDispatcher Instance(){
+		if(instance != null){
+			instance = new MGEventDispatcher();
+		}
+
+		return instance;
+	}
+
     private Dictionary<int, List<DispatchEventHandler> > EventTable;
 
     //声明委托

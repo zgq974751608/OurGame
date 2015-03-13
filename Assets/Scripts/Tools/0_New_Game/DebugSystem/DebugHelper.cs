@@ -10,11 +10,22 @@ using UnityEngine;
 using System.Collections;
 
 public class DebugHelper {
+	static bool debugWorked = false;
+
+	public static void InitDebuger(){
+		//TODO
+		debugWorked = true;
+	}
+
 	public static void Log(object obj){
-		Debug.Log(obj);
+		if(debugWorked) {
+			Debug.Log(obj);
+		}
 	}
 
 	public static void LogError(object obj){
-		Debug.LogError(obj);
+		if(debugWorked){
+		 	Debug.LogError(obj);
+		}
 	}
 }

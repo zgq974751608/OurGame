@@ -32,24 +32,24 @@ public class MGConfigDataLoader {
 		}
 
 		try{
-			Dictionary<string,MGDataManager.ResourceInfoStruct> dic = MGDataManager.newerResourceDic;
-			foreach(KeyValuePair<string,MGDataManager.ResourceInfoStruct> kvp in dic){
-				MGDataManager.ResourceInfoStruct tStruct = kvp.Value;
-				if(tStruct.resType != (int)MGDataManager.ResourceType.Config){
+			Dictionary<string,MGAssetManager.ResourceInfoStruct> dic = MGAssetManager.newerResourceDic;
+			foreach(KeyValuePair<string,MGAssetManager.ResourceInfoStruct> kvp in dic){
+				MGAssetManager.ResourceInfoStruct tStruct = kvp.Value;
+				if(tStruct.resType != (int)MGAssetManager.ResourceType.Config){
 					continue;
-				}
-
-				if(tStruct.resourcePathType == (int)MGDataManager.ResourceTathType.Resource){
-					TextAsset text = Resources.Load(tStruct.filePath) as TextAsset;
-					MemoryConfigData(text.text);
-				} else if(tStruct.resourcePathType == (int)MGDataManager.ResourceTathType.Streaming){
-
-				} else {
-					DebugHelper.Log("错误的配置表路径类型--->:" + tStruct.resourcePathType);
 				}
 			}
 		}catch(Exception e){
-			DebugHelper.Log("加载配置表发生错误" + e.ToString());
+			DebugHelper.Log(StringTool.Append("加载配置表发生错误" , e.ToString()));
+		}
+	}
+
+	void OnLoadedConfig(UnityEngine.Object obj){
+		if(obj != null){
+			string content = "";
+			TextAsset text = obj as TextAsset;
+			content = text.text;
+			MemoryConfigData(content);
 		}
 	}
 
